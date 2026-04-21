@@ -1,18 +1,26 @@
-FROM node:18-alpine
+FROM node:20-alpine
+
+# Update OS packages
+RUN apk update && apk upgrade
+
+# Create non-root user (security best practice)
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install only production dependencies
+RUN npm install --omit=dev
 
-# Copy application files
 COPY . .
 
-# Expose port
+# Change ownership
+RUN chown -R appuser:appgroup /app
+
+# Run as non-root
+USER appuser
+
 EXPOSE 5000
 
-# Start the application
 CMD ["npm", "start"]
