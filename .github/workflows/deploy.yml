@@ -138,5 +138,5 @@ jobs:
     with:
       target: http://${{ secrets.EC2_IP }}
       fail_action: false
-      artifact_name: zap-report
+      artifact_name: zap_report_1
     continue-on-error: true
