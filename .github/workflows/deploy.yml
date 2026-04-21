@@ -7,7 +7,7 @@ on:
 jobs:
  devsecops:
   runs-on: ubuntu-latest
-  
+
   steps:
 
   # 1. Checkout Code
@@ -26,17 +26,17 @@ jobs:
       cd backend
       npm install
 
-  # 4. Dependency Scan (npm audit)
+  # 4. Dependency Scan
   - name: Dependency Scan
     run: |
       cd backend
       npm audit --audit-level=high || true
 
-  # 5. Secret Scan (Gitleaks)
+  # 5. Secret Scan
   - name: Secret Scan
     uses: gitleaks/gitleaks-action@v2
 
-  # 6. SonarCloud Scan (SAST)
+  # 6. SonarCloud Scan (SAST + Quality Gate)
   - name: SonarCloud Scan
     uses: SonarSource/sonarcloud-github-action@master
     env:
@@ -46,19 +46,13 @@ jobs:
         -Dsonar.organization=turkardiksha345-oss
         -Dsonar.projectKey=turkardiksha345-oss_student-registration-app-
         -Dsonar.sources=backend,frontend
+        -Dsonar.qualitygate.wait=true
 
-  # 7. Sonar Quality Gate
-  - name: Sonar Quality Gate
-    uses: SonarSource/sonarcloud-quality-gate-action@master
-    timeout-minutes: 5
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  # 8. Docker Login
+  # 7. Docker Login
   - name: Docker Login
     run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-  # 9. Build & Push Docker Images
+  # 8. Build & Push Docker Images
   - name: Build and Push Images
     run: |
       docker build -t ${{ secrets.DOCKER_USERNAME }}/student-backend:latest ./backend
@@ -67,7 +61,7 @@ jobs:
       docker push ${{ secrets.DOCKER_USERNAME }}/student-backend:latest
       docker push ${{ secrets.DOCKER_USERNAME }}/student-frontend:latest
 
-  # 10. Scan Docker Image (Trivy)
+  # 9. Scan Docker Image (Trivy)
   - name: Scan Backend Image
     uses: aquasecurity/trivy-action@master
     with:
@@ -76,7 +70,7 @@ jobs:
       exit-code: 1
       severity: CRITICAL,HIGH
 
-  # 11. Deploy to EC2
+  # 10. Deploy to EC2
   - name: Deploy to EC2
     uses: appleboy/ssh-action@master
     with:
@@ -92,7 +86,7 @@ jobs:
         docker-compose -f docker-compose.ec2.yml down
         docker-compose -f docker-compose.ec2.yml up -d
 
-  # 12. DAST Scan (OWASP ZAP)
+  # 11. DAST Scan (OWASP ZAP)
   - name: OWASP ZAP Scan
     uses: zaproxy/action-full-scan@v0.7.0
     with:
