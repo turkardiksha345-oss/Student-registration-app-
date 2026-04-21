@@ -79,7 +79,7 @@ jobs:
       username: ubuntu
       key: ${{ secrets.EC2_KEY }}
       script: |
-        cd Student-registration-app
+        cd /home/ubuntu/Student-registration-app-
 
         docker pull ${{ secrets.DOCKER_USERNAME }}/student-backend:latest
         docker pull ${{ secrets.DOCKER_USERNAME }}/student-frontend:latest
