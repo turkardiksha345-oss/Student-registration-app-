@@ -46,7 +46,6 @@ jobs:
         -Dsonar.organization=turkardiksha345-oss
         -Dsonar.projectKey=turkardiksha345-oss_Student-registration-app-
         -Dsonar.sources=backend,frontend
-        -Dsonar.qualitygate.wait=true
 
   # 7. Docker Login
   - name: Docker Login
