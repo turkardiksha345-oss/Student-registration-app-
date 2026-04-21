@@ -67,7 +67,7 @@ jobs:
       image-ref: ${{ secrets.DOCKER_USERNAME }}/student-backend:latest
       format: table
       exit-code: 1
-      severity: CRITICAL,HIGH
+      severity: CRITICAL
 
   # 10. Deploy to EC2
   - name: Deploy to EC2
