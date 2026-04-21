@@ -1,19 +1,18 @@
 name: DevSecOps Pipeline
 
 on:
-push:
-branches: [ "main" ]
+ push:
+  branches: [ "main" ]
 
 permissions:
-issues: write
-contents: read
+ issues: write
+ contents: read
 
 jobs:
-devsecops:
-runs-on: ubuntu-latest
+ devsecops:
+  runs-on: ubuntu-latest
 
-```
-steps:
+  steps:
 
   # 1. Checkout Code (Fix for Gitleaks)
   - name: Checkout Code
@@ -147,4 +146,3 @@ steps:
       fail_action: false
       artifact_name: zap-report
     continue-on-error: true
-```
