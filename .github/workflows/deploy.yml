@@ -46,14 +46,8 @@ jobs:
   # 6. SonarCloud (SAST)
   - name: SonarCloud Scan
     uses: SonarSource/sonarcloud-github-action@master
-    continue-on-error: true
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    with:
-     args: >
-        -Dsonar.organization=turkardiksha345-oss
-        -Dsonar.projectKey=turkardiksha345-oss_student-registration-app
-        -Dsonar.sources=backend,frontend
 
   # 7. Docker Login
   - name: Docker Login
