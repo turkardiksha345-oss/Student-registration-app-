@@ -44,7 +44,7 @@ jobs:
     with:
       args: >
         -Dsonar.organization=turkardiksha345-oss
-        -Dsonar.projectKey=turkardiksha345-oss_student-registration-app-
+        -Dsonar.projectKey=turkardiksha345-oss_Student-registration-app-
         -Dsonar.sources=backend,frontend
         -Dsonar.qualitygate.wait=true
 
